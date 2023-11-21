@@ -127,6 +127,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[lines[0]]()
+        print('CLASS_NAME:', new_instance.to_dict()['__class__'])
 
         if (len(lines) > 1):
             key_value = {}
