@@ -10,6 +10,6 @@ class User(BaseModel):
         """ Initialises attributes of class User """
         super().__init__()
         self.email = kwargs.get('email', '')
-        self.password = kwargs.get('passwrod', '')
+        self.password = kwargs.get('password', '')
         self.first_name = kwargs.get('first_name', '')
         self.last_name = kwargs.get('last_name', '')

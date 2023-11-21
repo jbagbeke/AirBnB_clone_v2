@@ -7,6 +7,7 @@ class Amenity(BaseModel):
     """ Amenity class of for the User """
 
     def __init__(self, *args, **kwargs):
+        print('KWARGS::\n', kwargs)
         """ Does initialisation of attributes """
-        super.__init__()
+        super().__init__()
         self.name = kwargs.get('name', "")
