@@ -19,7 +19,8 @@ class FileStorage:
                 cls_name = re.match(r'(.*?)\.', obj)
                 if cls_name.group(1) == cls:
                     temp[obj] = FileStorage.__objects[obj]
-            return temp
+            if len(temp.keys()) != 0:
+                return temp
 
         return FileStorage.__objects
 
