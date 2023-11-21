@@ -126,6 +126,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
+        new_instance = HBNBCommand.classes[lines[0]]()
+
         if (len(lines) > 1):
             key_value = {}
             for idx in range(1, len(lines)):
@@ -138,15 +140,19 @@ class HBNBCommand(cmd.Cmd):
                     if (val_two is not None):
                         new_val = val_two.replace('_', ' ')
                         new_val = new_val.replace('"', '\"')
-                        key_value[str(val_one)] = new_val
+                        setattr(new_instance, val_one, new_val)
                 else:
                     attribs = re.match('(.*?)=(\S+)', lines[idx])
                     val_one = attribs.group(1)
                     val_two = attribs.group(2)
-                    key_value[str(val_one)] = val_two
+
+                    if '.' in val_two:
+                        val_two = float(val_two)
+                    else:
+                        val_two = int(val_two)
+                    setattr(new_instance, val_one, val_two)
                 idx += 1
 
-        new_instance = HBNBCommand.classes[lines[0]](**key_value)
         print(new_instance.id)
         storage.save()
 
