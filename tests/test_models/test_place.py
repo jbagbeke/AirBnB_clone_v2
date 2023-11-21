@@ -67,3 +67,11 @@ class test_Place(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.amenity_ids), list)
+
+    def test_price_by_night_value(self):
+        new = self.value(price_by_night=490)
+        self.assertEqual(new.price_by_night, 490)
+
+    def test_max_guest_value(self):
+        new = self.value(max_guest=50)
+        self.assertEqual(new.max_guest, 50)
