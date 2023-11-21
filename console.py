@@ -137,6 +137,7 @@ class HBNBCommand(cmd.Cmd):
                     
                     if (val_two is not None):
                         new_val = val_two.replace('_', ' ')
+                        new_val = new_val.replace('"', '\"')
                         key_value[str(val_one)] = new_val
                 else:
                     attribs = re.match('(.*?)=(\S+)', lines[idx])
