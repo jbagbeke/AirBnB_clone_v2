@@ -19,8 +19,8 @@ class FileStorage:
                 cls_name = re.match(r'(.*?)\.', obj)
                 if cls_name.group(1) == cls:
                     temp[obj] = FileStorage.__objects[obj]
-            if len(temp.keys()) != 0:
-                return temp
+            
+            return temp
 
         return FileStorage.__objects
 
@@ -44,6 +44,7 @@ class FileStorage:
             try:
                 key = obj.to_dict()['__class__'] + '.' + obj.id
                 del FileStorage.__objects[key]
+                self.save()
             except KeyError:
                 pass
 
