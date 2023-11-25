@@ -15,11 +15,11 @@ class FileStorage:
         if cls is not None:
             temp = {}
 
-            for obj in FileStorage.__objects:
-                cls_name = re.match(r'(.*?)\.', obj)
-                if cls_name.group(1) == cls:
-                    temp[obj] = FileStorage.__objects[obj]
-            
+            print(FileStorage.__objects)
+            temp = {k: v for k, v in FileStorage.__objects.items()
+                        if isinstance(v, cls)}
+
+            print('HELLOOOOO ONE::\n', temp)
             return temp
 
         return FileStorage.__objects
