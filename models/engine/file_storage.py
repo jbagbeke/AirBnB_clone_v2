@@ -19,7 +19,6 @@ class FileStorage:
             temp = {k: v for k, v in FileStorage.__objects.items()
                         if isinstance(v, cls)}
 
-            print('HELLOOOOO ONE::\n', temp)
             return temp
 
         return FileStorage.__objects
@@ -39,7 +38,7 @@ class FileStorage:
 
     def delete(self, obj=None):
         """ Deletes obj from __objects if it’s inside """
-
+        
         if obj is not None:
             try:
                 key = obj.to_dict()['__class__'] + '.' + obj.id
