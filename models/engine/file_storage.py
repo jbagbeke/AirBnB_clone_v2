@@ -15,7 +15,6 @@ class FileStorage:
         if cls is not None:
             temp = {}
 
-            print(FileStorage.__objects)
             temp = {k: v for k, v in FileStorage.__objects.items()
                         if isinstance(v, cls)}
 
