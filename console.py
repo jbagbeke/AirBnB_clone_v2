@@ -3,6 +3,7 @@
 import cmd
 import sys
 import re
+import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -127,7 +128,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[lines[0]]()
-        print('CLASS_NAME:', new_instance.to_dict()['__class__'])
 
         if (len(lines) > 1):
             key_value = {}
@@ -153,6 +153,9 @@ class HBNBCommand(cmd.Cmd):
                         val_two = int(val_two)
                     setattr(new_instance, val_one, val_two)
                 idx += 1
+
+        if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+            storage.new(new_instance)
 
         print(new_instance.id)
         storage.save()
@@ -186,7 +189,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            print(storage.__objects[key])
         except KeyError:
             print("** no instance found **")
 
@@ -228,23 +231,37 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, args):
+    def do_all(self, arg):
         """ Shows all objects, or all objects of a class"""
         print_list = []
+        new_list = []
+        args = arg.split(' ')[0]  # remove possible trailing args
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+        if arg:
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
 
-        print(print_list)
+            if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+                for v in storage.all(args).values():
+                    print_list.append(str(v))
+            else:
+                for k, v in storage.__objects.items():
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
+        else:
+            if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+                for v in storage.all().values():
+                    print_list.append(str(v))
+            else:
+                for k, v in storage._FileStorage__objects.items():
+                    print_list.append(str(v))
+
+        for val in print_list:
+            new = val
+            new_list.append(val)
+        #print(print_list)
+        print(new_list)
 
     def help_all(self):
         """ Help information for the all command """
