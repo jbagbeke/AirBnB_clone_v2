@@ -257,11 +257,7 @@ class HBNBCommand(cmd.Cmd):
                 for k, v in storage._FileStorage__objects.items():
                     print_list.append(str(v))
 
-        for val in print_list:
-            new = val
-            new_list.append(val)
-        #print(print_list)
-        print(new_list)
+        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
