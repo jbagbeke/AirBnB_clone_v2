@@ -3,8 +3,18 @@
 from models.base_model import BaseModel
 from models.base_model import Base
 import os
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
+
+metadata = Base.metadata
+place_amenity = Table('place_amenity', metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True, nullable=False))
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -27,6 +37,8 @@ class Place(BaseModel, Base):
     cities = relationship('City', back_populates='places')
     reviews = relationship('Review', back_populates='place', cascade='all, delete')
 
+    amenities = relationship('Amenity', secondary=place_amenity, viewonly=False, back_populates='place_amenities')
+
 
     if os.environ.get('HBNB_TYPE_STORAGE') != 'db':
         @property
@@ -37,3 +49,17 @@ class Place(BaseModel, Base):
 
             objs = storage.all('Review')
             return [obj for obj in objs.values() if obj.place_id == self.id]
+
+        @property
+        def amenities(self):
+            """ Returns the list of Amenity instances based on the attribute amenity_ids """
+
+            objs = storage.all('Amenity')
+            return [obj for obj in objs if obj.id in self.amenity_ids]
+        
+        @amenities.setter
+        def amenities(self, obj=None):
+            """ Handles append method for adding an Amenity.id to the attribute amenity_ids """
+
+            if obj and type(obj).__name__ == 'Amenity':
+                self.amenity_ids.append(obj.id)
