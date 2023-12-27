@@ -20,24 +20,25 @@ def do_deploy(archive_path):
         put(archive_path, '/tmp/')
 
         arch_name = archive_path.split('/')[-1].replace('.tgz', '')
+        
         ddir = '/data/web_static/releases/' + arch_name
         
         arch_path = '/tmp/' + arch_name + '.tgz'
 
-        run("mkdir -p {}".format(ddir))
-        run("tar -xzf /tmp/{}.tgz -C {}".format(arch_name, ddir))
+        run("sudo mkdir -p {}".format(ddir))
 
-        run("sudo rm -rf /tmp/{}.tgz".format(arch_name))
+        run("sudo tar -xzf /tmp/{}.tgz -C {}".format(arch_name, ddir))
 
-        run("mv {}/web_static/* {}/".format(ddir, ddir))
+        run("sudo sudo rm -rf /tmp/{}.tgz".format(arch_name))
 
-        run("rm -rf {}/web_static".format(ddir))
+        run("sudo mv {}/web_static/* {}".format(ddir, ddir))
 
-        run("rm -rf /data/web_static/current")
+        run("sudo rm -rf {}/web_static".format(ddir))
 
-        run("ln -s {} /data/web_static/current".format(ddir))
+        run("sudo rm -rf /data/web_static/current")
 
-        print("New version deployed!")
+        run("sudo ln -s {}/ /data/web_static/current".format(ddir))
+
         return True
     else:
         return False
