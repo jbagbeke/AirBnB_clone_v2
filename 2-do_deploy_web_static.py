@@ -16,29 +16,40 @@ env.key_filename = "~/.ssh/id_rsa"
 def do_deploy(archive_path):
     """ Distributes an archive to your web servers """
 
-    if os.path.exists(archive_path):
+
+    try:
+        if not os.path.exists(archive_path):
+            return False
+
+        # Sending the archive to '/tmp/'
         put(archive_path, '/tmp/')
 
-        arch_name = archive_path.split('/')[-1].replace('.tgz', '')
-        
-        ddir = '/data/web_static/releases/' + arch_name
-        
-        arch_path = '/tmp/' + arch_name + '.tgz'
+        # Extracting the file name without extension and repetitive dirs
+        archive_name = os.path.basename(archive_path).split(".")[0]
+        ddir = "/data/web_static/releases"
 
-        run("sudo mkdir -p {}".format(ddir))
+        # Creation of needed directories
+        run("mkdir -p {}/{}/".format(ddir, archive_name))
 
-        run("sudo tar -xzf /tmp/{}.tgz -C {}".format(arch_name, ddir))
+        # Extracting the archive
+        run("tar -xzf /tmp/{1}.tgz -C {0}/{1}/".format(ddir, archive_name))
 
-        run("sudo sudo rm -rf /tmp/{}.tgz".format(arch_name))
+        # Deletion of archive
+        run("rm /tmp/{}.tgz".format(archive_name))
 
-        run("sudo mv {}/web_static/* {}".format(ddir, ddir))
+        # Moving contents of uncompressed archive to required dir
+        run("mv {0}/{1}/web_static/* {0}/{1}/".format(ddir, archive_name))
 
-        run("sudo rm -rf {}/web_static".format(ddir))
+        # Deleting previously extracted files
+        run("rm -rf {}/{}/web_static".format(ddir, archive_name))
 
-        run("sudo rm -rf /data/web_static/current")
+        # Removing old symbolic link
+        run("rm -rf /data/web_static/current")
 
-        run("sudo ln -s {}/ /data/web_static/current".format(ddir))
+        # Creating new symbolic link
+        run("ln -s {}/{}/ /data/web_static/current".format(ddir, archive_name))
 
-        return True
-    else:
+        # Optional printing
+        print("New version deployed!")
+    except Exception:
         return False
