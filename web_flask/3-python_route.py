@@ -33,12 +33,13 @@ def display_C(text):
     return ("C {}".format(text.replace('_', ' ')))
 
 
-@app.route('/python/<text>', defaults={'txt': 'is cool'}, strict_slashes=False)
-def display_Python(text, txt):
+@app.route('/python/<text>', strict_slashes=False)
+@app.route('/python/', defaults={'txt': 'is cool'})
+def display_Python(text):
     """
         Displays Python followed by input
                                         """
-    return ("Python {}".format(text.replace('_', ' ') if text else txt))
+    return ("Python {}".format(text.replace('_', ' ')))
 
 
 if __name__ == '__main__':
