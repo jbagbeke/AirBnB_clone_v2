@@ -42,5 +42,13 @@ def display_Python(text):
     return ("Python {}".format(text.replace('_', ' ')))
 
 
+@app.route('/number/<int:n>', strict_slashes=False)
+def display_int(n):
+    """
+        Dislpays n if only it's a number
+                                        """
+    return ('{} is a number'.format(n))
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
