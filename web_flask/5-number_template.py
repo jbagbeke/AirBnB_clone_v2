@@ -55,7 +55,7 @@ def display_html_n(n):
     """
         Displays template with var int 'n'
                                             """
-    return render_template('templates/5-number.html', n=n)
+    return render_template('5-number.html', n=n)
 
 
 if __name__ == '__main__':
