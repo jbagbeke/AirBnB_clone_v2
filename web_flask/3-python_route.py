@@ -34,7 +34,7 @@ def display_C(text):
 
 
 @app.route('/python/<text>', strict_slashes=False)
-@app.route('/python/', defaults={'txt': 'is cool'})
+@app.route('/python/', defaults={'text': 'is cool'})
 def display_Python(text):
     """
         Displays Python followed by input
@@ -43,4 +43,4 @@ def display_Python(text):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='127.0.0.1', port=5000)
