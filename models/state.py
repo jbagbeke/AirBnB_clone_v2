@@ -6,6 +6,7 @@ from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
 import os
 
+
 class State(BaseModel, Base):
     """ State class """
 
@@ -22,7 +23,7 @@ class State(BaseModel, Base):
     if os.environ.get('HBNB_TYPE_STORAGE') != 'db':
         @property
         def cities(self):
-            """ 
+            """
                 Returns list of City instances where state_id == State.id
                                                                           """
             from models import storage
