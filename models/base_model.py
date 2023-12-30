@@ -22,7 +22,7 @@ class BaseModel:
             self.updated_at = datetime.now()
 
             for key, value in kwargs.items():
-                setattr(self, key, value)
+               setattr(self, key, value)
         else:
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')

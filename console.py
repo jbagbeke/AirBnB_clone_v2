@@ -154,8 +154,8 @@ class HBNBCommand(cmd.Cmd):
                     setattr(new_instance, val_one, val_two)
                 idx += 1
 
-        if os.environ.get("HBNB_TYPE_STORAGE") == "db":
-            storage.new(new_instance)
+        # if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+        storage.new(new_instance)
 
         print(new_instance.id)
         storage.save()
@@ -246,7 +246,7 @@ class HBNBCommand(cmd.Cmd):
                 for v in storage.all(args).values():
                     print_list.append(str(v))
             else:
-                for k, v in storage.__objects.items():
+                for k, v in storage._FileStorage__objects.items():
                     if k.split('.')[0] == args:
                         print_list.append(str(v))
         else:
@@ -254,7 +254,7 @@ class HBNBCommand(cmd.Cmd):
                 for v in storage.all().values():
                     print_list.append(str(v))
             else:
-                for k, v in storage.__objects.items():
+                for k, v in storage._FileStorage__objects.items():
                     print_list.append(str(v))
 
         print(print_list)

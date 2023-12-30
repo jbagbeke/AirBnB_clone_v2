@@ -88,6 +88,12 @@ class DBStorage:
                                                                 """
         self.__session.commit()
 
+    def close(self):
+        """
+            Calls remove() method on the private session attribute
+                                                                    """
+        self.__session.remove()
+
     def delete(self, obj=None):
         """
             Delete from the current database session obj if not None

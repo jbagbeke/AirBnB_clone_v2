@@ -11,10 +11,13 @@ class State(BaseModel, Base):
 
     __tablename__ = "states"
 
-    name = Column(String(128), nullable=False)
-    cities = relationship("City",
-                          back_populates="state",
-                          cascade="all, delete")
+    if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+        name = Column(String(128), nullable=False)
+        cities = relationship("City",
+                              back_populates="state",
+                              cascade="all, delete")
+    else:
+        name = ""
 
     if os.environ.get('HBNB_TYPE_STORAGE') != 'db':
         @property
@@ -23,6 +26,7 @@ class State(BaseModel, Base):
                 Returns list of City instances where state_id == State.id
                                                                           """
             from models import storage
+            from models.city import City
 
             city_list = []
             for city in storage.all(City).values():
