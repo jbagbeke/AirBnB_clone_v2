@@ -59,11 +59,14 @@ class DBStorage:
                 'Review': Review
                 }
 
-        if cls: 
+        if cls:
+            if type(cls) != 'str':
+                cls = cls.__name__
+
             objects = self.__session.query(classes.get(cls)).all()
 
             for obj in objects:
-                key = cls + '.' + str(obj.id)
+                key = str(cls) + '.' + str(obj.id)
                 new_dict[key] = obj
         else:
             for cls in classes_to_query:
