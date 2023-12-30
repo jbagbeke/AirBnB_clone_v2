@@ -36,6 +36,8 @@ class DBStorage:
                                                      pssword,
                                                      host,
                                                      db), pool_pre_ping=True)
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
 
         if os.environ.get("HBNB_ENV") == "test":
             metadata = MetaData(bind=self.__engine)
@@ -46,8 +48,6 @@ class DBStorage:
         """
             Returns A dictionary of all created objects
                                                         """
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
         new_dict = {}
         classes_to_query = [User, State, City, Amenity, Place, Review]
         classes = {
@@ -95,7 +95,7 @@ class DBStorage:
         """
             Calls remove() method on the private session attribute
                                                                     """
-        self.__session.remove()
+        self.__session.close()
 
     def delete(self, obj=None):
         """
