@@ -60,7 +60,7 @@ class DBStorage:
                 }
 
         if cls:
-            if type(cls) is not 'str':
+            if not isinstance(cls, str):
                 cls = cls.__name__
 
             objects = self.__session.query(classes.get(cls)).all()
