@@ -17,9 +17,7 @@ def hbnb_city_state():
         Fetches data from storage engine
                                         """
     states = storage.all(State)
-    states = sorted(states.values(), key=lambda x: x.name)
-    states = {v: sorted(v.cities, key=lambda x: x.name) for v in states
-              if v.cities}
+
     return render_template('8-cities_by_states.html', states=states)
 
 
