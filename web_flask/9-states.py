@@ -27,7 +27,6 @@ def hbnb_state_id(id):
         Displays the state with the specified id
                                                 """
     states = storage.all(State)
-    print(states)
     state_ids = [state.id for state in states.values()]
 
     return render_template('9-states.html',
