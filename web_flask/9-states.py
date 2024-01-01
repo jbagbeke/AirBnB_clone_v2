@@ -21,6 +21,14 @@ def hbnb_state():
     return render_template('9-states.html', states=states.values())
 
 
+@app.teardown_appcontext
+def close(self):
+    """
+        Method to close the current session with the database
+                                    """
+    storage.close()
+
+
 @app.route('/states/<id>', strict_slashes=False)
 def hbnb_state_id(id):
     """
